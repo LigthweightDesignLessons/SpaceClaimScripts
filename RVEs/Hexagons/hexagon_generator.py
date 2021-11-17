@@ -192,7 +192,7 @@ class HexCoreMaterial():
         selection = Selection.Create(GetRootPart().DatumPlanes[0])
         direction = Direction.DirZ
         options = MoveOptions()
-        result = Move.Translate(selection, direction, unit(-1), options)
+        result = Move.Translate(selection, direction, MM(-1), options)
         # EndBlock
 
         # Set Sketch Plane
@@ -230,7 +230,7 @@ class HexCoreMaterial():
         selection = Selection.Create(GetRootPart().Bodies[1].Faces[0])
         options = ExtrudeFaceOptions()
         options.ExtrudeType = ExtrudeType.ForceCut
-        result = ExtrudeFaces.Execute(selection, self.height + unit(1), options)
+        result = ExtrudeFaces.Execute(selection, self.height + MM(1), options)
         # EndBlock
 
         # Objekte löschen
@@ -267,24 +267,14 @@ class HexCoreMaterial():
 #### Hier gehts los ####
 
 
-wall_thickness = 1
-height  = 10
-line_length = 10
-leaver_length = 5
-angle = 120
+wall_thickness = UM(5)
+height  = UM(50)
+line_length = UM(80)
+leaver_length = UM(50)
+angle = DEG(120)
 
 
 ClearAll()
-
-def unit(value):
-    return 100*UM(value)
-
-
-wall_thickness = unit(wall_thickness)
-height = unit(height)
-line_length = unit(line_length)
-leaver_length = unit(leaver_length)
-angle = DEG(angle)
 
 material = HexCoreMaterial(line_length, leaver_length, angle, wall_thickness, height)
 
@@ -306,4 +296,8 @@ result = NamedSelection.Create(primarySelection, secondarySelection)
 
 # Benannte Auswahl umbenennen
 result = NamedSelection.Rename("Gruppe1", "Matrix")
+# EndBlock
+
+# 4 Objekte vereinfachen
+result = FixExtraEdges.FindAndFix()
 # EndBlock
